@@ -31,13 +31,17 @@ def from_decimal(decimal_number, target_base):
 def from_decimal(decimal_number, target_base):
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     result_digits = []
+    division_steps = []
     current = decimal_number
     while current > 0:
         remainder = current % target_base
+        quotient = current // target_base
+        division_steps.append(f"{current} / {target_base} = {quotient} (остаток {remainder})")
         result_digits.append(chars[remainder])
-        current = current // target_base
+        current = quotient
+    step2_str = "\n".join(division_steps)
     final_result = "".join(result_digits[::-1])
-    return final_result
+    return final_result, step2_str
 @app.get("/convert")
 def convert_number(number: str, base_from: int, base_to: int):
     decimal_value, step1_text = to_decimal(number, base_from)
